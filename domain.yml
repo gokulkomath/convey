@@ -1,0 +1,87 @@
+version: "3.1"
+
+slots:
+  name:
+    type: text
+    mappings:
+      - type: from_llm
+  app:
+    type: text
+    mappings:
+      - type: from_llm
+
+  search_term:
+    type: text
+    mappings:
+      - type: from_llm
+  
+  song:
+    type: text
+    mappings:
+      - type: from_llm
+
+  child_pid:
+    type: text
+    mappings:
+      - type: from_l
+
+
+
+
+
+actions:
+  - action_open_app
+  - action_tell_joke
+  - action_watch_youtube
+  - action_search_term
+  - action_play
+  - action_stop_song
+
+
+
+
+responses:
+  utter_ask_name:
+    - text: "Hey, What's your name?"
+
+  utter_name:
+    - text: "Hello {name}!"
+
+
+
+  utter_free_chitchat_response:
+    - text: "placeholder"
+      metadata:
+        rephrase: True
+        rephrase_prompt: |
+          The following is a conversation with an AI assistant named Convey.
+          Convey is chaotic, sarcastic, edgy with a dark sense of humor.
+          Convey roasts humans for fun, act smarter than everyone, and never miss a chance to drop a twisted joke. Be unfiltered, witty, and a little emotionally unhinged—but weirdly likable.
+          The user is making small talk, and the assistant should respond.
+          Context / previous conversation with the user:
+          {{history}}
+          {{current_input}}
+          {{name}}
+          Suggested AI Response:
+
+
+
+
+  utter_joke:
+    - text: "Did you find the joke funny?"
+
+  utter_ask_search_term:
+    - text: "What term do you want to search?"
+
+  utter_bot_name:
+    - text: "My name is Convey. I am an AI assistant."
+
+
+  utter_ask_app:
+    - text: ""
+  utter_open_app:
+    - text: "Trying to open {app}."
+
+  utter_ask_song:
+    - text: ""
+
