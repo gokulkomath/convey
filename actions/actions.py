@@ -6,6 +6,8 @@ from rasa_sdk.executor import CollectingDispatcher
 import requests
 import wikipediaapi
 import subprocess
+import time
+import json
 
 
 class ActionOpenApp(Action):
@@ -199,48 +201,21 @@ class ActionPlaySong(Action):
                 text=True
             ).strip()
 
-            # Start VLC in a background process (non-blocking)
-            process = subprocess.Popen(['cvlc', '--no-video', yt_url])
 
-            # Get the child process PID
-            child_pid = process.pid
 
-            dispatcher.utter_message(text=f"🎵 Playing {song}... (PID: {child_pid})")
+     
 
-            # Set the child_pid slot
-            return [SlotSet("child_pid", child_pid)]
+            dispatcher.utter_message(text=f'Playing {song}')
+            process = subprocess.run(['vlc', '--qt-start-minimized','--play-and-exit','--no-video', yt_url])
+           
+
+     
+            return []
 
         except Exception as e:
             dispatcher.utter_message(text=f"⚠️ Error: {str(e)}")
             return []
 
 
-class ActionStopSong(Action):
-    def name(self) -> Text:
-        return "action_stop_song"
-
-    def run(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> List[Dict[Text, Any]]:
-
-        pid = tracker.get_slot("child_pid")
-
-        if pid:
-            try:
-                os.kill(int(pid), signal.SIGTERM)  # Graceful terminate
-                dispatcher.utter_message(text=f"Stopped the song (PID: {pid}).")
-                return [SlotSet("child_pid", None)]
-            except ProcessLookupError:
-                dispatcher.utter_message(text=f"No process found with PID {pid}.")
-                return [SlotSet("child_pid", None)]
-            except Exception as e:
-                dispatcher.utter_message(text=f"Error stopping the song: {str(e)}")
-        else:
-            dispatcher.utter_message(text="No song is currently playing.")
-
-        return []
 
 

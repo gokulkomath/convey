@@ -9,25 +9,18 @@ slots:
     type: text
     mappings:
       - type: from_llm
-
   search_term:
     type: text
     mappings:
       - type: from_llm
-  
   song:
     type: text
     mappings:
       - type: from_llm
-
   child_pid:
     type: text
     mappings:
-      - type: from_l
-
-
-
-
+      - type: from_llm
 
 actions:
   - action_open_app
@@ -37,17 +30,12 @@ actions:
   - action_play
   - action_stop_song
 
-
-
-
 responses:
   utter_ask_name:
     - text: "Hey, What's your name?"
 
   utter_name:
     - text: "Hello {name}!"
-
-
 
   utter_free_chitchat_response:
     - text: "placeholder"
@@ -64,9 +52,6 @@ responses:
           {{name}}
           Suggested AI Response:
 
-
-
-
   utter_joke:
     - text: "Did you find the joke funny?"
 
@@ -76,12 +61,9 @@ responses:
   utter_bot_name:
     - text: "My name is Convey. I am an AI assistant."
 
-
   utter_ask_app:
     - text: ""
   utter_open_app:
     - text: "Trying to open {app}."
-
   utter_ask_song:
     - text: ""
-

@@ -1,10 +1,5 @@
 flows:
-  talk:
-    description: small talks with the user.
-    steps:
-      - collect: name
-      - action: utter_name
-      - action: utter_free_chitchat_response
+
 
   open_app:
     description: User wants to open , start or execute an app like discord or executable file .
