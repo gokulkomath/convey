@@ -29,6 +29,8 @@ actions:
   - action_search_term
   - action_play
   - action_stop_song
+  - action_current_time
+  - action_internet_search
 
 responses:
   utter_ask_name:
@@ -56,11 +58,17 @@ responses:
     - text: "Did you find the joke funny?"
 
   utter_ask_search_term:
-    - text: "What term do you want to search?"
+    - text: "Searching for "
 
   utter_bot_name:
     - text: "My name is Convey. I am an AI assistant."
 
+
+
+
+  
+  utter_ask_time:
+    - text: ""
   utter_ask_app:
     - text: ""
   utter_open_app:

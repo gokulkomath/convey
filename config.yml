@@ -1,13 +1,13 @@
 recipe: default.v1
 language: en
 pipeline:
-- name: SingleStepLLMCommandGenerator
-  llm:
-    model_group: rasa_command_generation_model
-  flow_retrieval:
-    active: false
+  - name: NLUCommandAdapter
+  - name: SingleStepLLMCommandGenerator
+    llm:
+      model_group: rasa_command_generation_model
+    flow_retrieval:
+      active: false 
 
 policies:
-- name: FlowPolicy
-#  - name: EnterpriseSearchPolicy
+  - name: FlowPolicy
 assistant_id: 20250603-100729-chalky-marlin
