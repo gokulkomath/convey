@@ -10,5 +10,15 @@ flows:
     steps:
    
       - action: action_internet_search
+      - action: utter_ask_moreinformation_confirm
+      - collect: moreinformation_confirm
+        next:
+          - if: slots.moreinformation_confirm
+            then:
+              - action: action_internet_more_info
+                next: END
+          - else: 
+              - action: utter_bye
+                next: END
  
   

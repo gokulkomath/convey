@@ -9,6 +9,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from duckduckgo_search import DDGS
 from urllib.parse import urlparse
 import re
+from rasa_sdk.events import SlotSet
 
 class ActionOpenApp(Action):
     def name(self) -> Text:
@@ -208,6 +209,9 @@ class ActionInternetSearch(Action):
 
         parsed = urlparse(results[0]['href'])
         domain = parsed.netloc
+        href = results[0]['href']
+        
+
 
         if domain.startswith('www.'):
             domain = domain[4:]
@@ -216,3 +220,32 @@ class ActionInternetSearch(Action):
 
         body = re.sub(r"\{.*?\}", "", results[0]['body'])
         dispatcher.utter_message(text=f"According to {domain}, {body}")
+
+        return [SlotSet("href", href)]
+
+class ActionInternetMoreInfo(Action):
+    def name(self) -> Text:
+        return "action_internet_more_info"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+    
+        try:
+            href = tracker.get_slot('href')
+    
+            dispatcher.utter_message(text="Opening Brave...")
+            subprocess.Popen(["/usr/bin/brave", "--new-window",href ])
+            return []
+        
+                
+        except Exception as e:
+            dispatcher.utter_message(text=f"⚠️ Exception: {str(e)}")
+        
+
+
+
+

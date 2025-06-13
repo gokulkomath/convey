@@ -17,7 +17,11 @@ slots:
     type: text
     mappings:
       - type: from_llm
-  child_pid:
+  moreinformation_confirm:
+    type: bool
+    mappings:
+      - type: from_llm
+  href:
     type: text
     mappings:
       - type: from_llm
@@ -31,6 +35,7 @@ actions:
   - action_stop_song
   - action_current_time
   - action_internet_search
+  - action_internet_more_info
 
 responses:
   utter_ask_name:
@@ -62,13 +67,11 @@ responses:
 
   utter_bot_name:
     - text: "My name is Convey. I am an AI assistant."
-
-
-
-
   
-  utter_ask_time:
-    - text: ""
+  utter_ask_moreinformation_confirm:
+    - text: "Do you want more info?"  
+  utter_bye:
+    - text: "Okay fine"
   utter_ask_app:
     - text: ""
   utter_open_app:
