@@ -123,6 +123,8 @@ class ActionSearchTerm(Action):
                 dispatcher.utter_message(page_py.title)
                 summary = page_py.summary[0:1000]
 
+                summary = re.sub(r'\([^)]*\)|\{[^}]*\}|\[[^\]]*\]','', summary)
+
                 first_dot = summary.find('.')
                 if first_dot == -1:
                     dispatcher.utter_message(text=f"According to Wikipedia, {summary}")
@@ -181,12 +183,15 @@ class ActionPlaySong(Action):
                 dispatcher.utter_message(text="I don't think that is a song.")
                 return []
 
-            # Start VLC and announce song
-            proc = subprocess.Popen([
+  
+
+            cv = subprocess.Popen(['alacritty','-e','cava'])
+            proc = subprocess.run([
                 'vlc', '--qt-start-minimized', '--play-and-exit', '--no-video', yt_url
             ])
+            song_title = re.sub(r'\([^)]*\)|\[[^\]]*\]', '', song_title)  # To remove paranthesis and anything inside it.
             dispatcher.utter_message(text=f"What you heard was {song_title}")
-            proc.wait()
+            cv.terminate()
 
         except Exception as e:
             dispatcher.utter_message(text=f"⚠️ Error: {str(e)}")
@@ -218,7 +223,8 @@ class ActionInternetSearch(Action):
 
 
 
-        body = re.sub(r"\{.*?\}", "", results[0]['body'])
+        body = re.sub(r'\([^)]*\)|\{[^}]*\}|\[[^\]]*\]','', results[0]['body'])
+        
         dispatcher.utter_message(text=f"According to {domain}, {body}")
 
         return [SlotSet("href", href)]
