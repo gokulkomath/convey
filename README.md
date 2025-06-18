@@ -16,7 +16,7 @@ Convey currently supports the following functionalities:
 This project has been primarily **built for and tested on Arch Linux**.
 
 Convey is configured to use **Brave Browser** for web-related tasks (like opening YouTube or performing internet searches). If you use a different default browser or Brave is not installed, you may need to modify the relevant code in the project for web-related functions to work as expected.
-
+Make sure to set up a Rasa Developer API key, which can be obtained from the Rasa Pro website.
 
 ### Dependencies
 
@@ -40,14 +40,8 @@ To ensure all functionalities work, please install the following system-level de
 
 Convey is a work in progress. While the core features mentioned above are functional and demonstrate the bot's capabilities, there's more work needed to refine its performance, expand its feature set, and improve robustness.
 
-### Areas for Future Development include:
 
-* Enhanced natural language understanding.
-* Broader application control and system automation.
-* Improved error handling and user feedback.
-* More comprehensive documentation and setup guides.
-
-We welcome contributions and feedback to help make Convey a more powerful and versatile assistant!
+I welcome contributions and feedback to help make Convey a more powerful and versatile assistant!
 
 ## ⚙️ Setup and Usage
 
@@ -75,6 +69,7 @@ We welcome contributions and feedback to help make Convey a more powerful and ve
     # rasa run actions 
     # rasa shell
     ```
+
 
 ## 🤝 Contributing
 
