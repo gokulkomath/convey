@@ -65,7 +65,6 @@ I welcome contributions and feedback to help make Convey a more powerful and ver
     ```
 4.  **Run the bot:**
     ```bash
-    # Provide the command to start your Rasa bot and any other script.
     # rasa run actions 
     # rasa shell
     ```
