@@ -49,7 +49,7 @@ I welcome contributions and feedback to help make Convey a more powerful and ver
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/gokulkomath/convey.git](https://github.com/gokulkomath/convey.git)
+    git clone https://github.com/gokulkomath/convey.git
     cd convey
     ```
 2.  **Create and activate a virtual environment:**
