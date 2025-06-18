@@ -1,0 +1,8 @@
+actions/__pycache__/
+*.pyc
+.venv/
+models/
+.rasa/cache/
+
+
+

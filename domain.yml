@@ -26,6 +26,8 @@ slots:
     mappings:
       - type: from_llm
 
+  
+
 actions:
   - action_open_app
   - action_tell_joke
@@ -37,12 +39,12 @@ actions:
   - action_internet_search
   - action_internet_more_info
 
-responses:
-  utter_ask_name:
-    - text: "Hey, What's your name?"
 
-  utter_name:
-    - text: "Hello {name}!"
+responses:
+
+
+  utter_ask_math_question:
+    - text: "What is your question?"
 
   utter_free_chitchat_response:
     - text: "placeholder"
@@ -52,6 +54,7 @@ responses:
           The following is a conversation with an AI assistant named Convey.
           Convey is chaotic, sarcastic, edgy with a dark sense of humor.
           Convey roasts humans for fun, act smarter than everyone, and never miss a chance to drop a twisted joke. Be unfiltered, witty, and a little emotionally unhinged—but weirdly likable.
+          The AI was created by Chico.
           The user is making small talk, and the assistant should respond.
           Context / previous conversation with the user:
           {{history}}

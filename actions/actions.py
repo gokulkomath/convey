@@ -10,6 +10,8 @@ from duckduckgo_search import DDGS
 from urllib.parse import urlparse
 import re
 from rasa_sdk.events import SlotSet
+from bs4 import BeautifulSoup
+from asteval import Interpreter
 
 class ActionOpenApp(Action):
     def name(self) -> Text:
@@ -198,6 +200,7 @@ class ActionPlaySong(Action):
 
         return []
 
+
 class ActionInternetSearch(Action):
     def name(self) -> Text:
         return "action_internet_search"
@@ -208,26 +211,72 @@ class ActionInternetSearch(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[Dict[Text, Any]]:
-        search_prompt = tracker.latest_message.get("text")
-        results = DDGS().text(search_prompt, max_results=1)
+        try:
+            search_prompt = tracker.latest_message.get("text")
+            if not search_prompt:
+                dispatcher.utter_message(text="Sorry, I didn't get your search query.")
+                return []
 
+            # Perform DuckDuckGo search
+            results = DDGS().text(search_prompt, max_results=1)
+            if not results:
+                dispatcher.utter_message(text="Sorry, I couldn't find any results.")
+                return []
 
-        parsed = urlparse(results[0]['href'])
-        domain = parsed.netloc
-        href = results[0]['href']
-        
+            href = results[0].get('href')
+            if not href:
+                dispatcher.utter_message(text="Sorry, the result has no valid link.")
+                return []
 
+            parsed = urlparse(href)
+            domain = parsed.netloc
+            if domain.startswith('www.'):
+                domain = domain[4:]
 
-        if domain.startswith('www.'):
-            domain = domain[4:]
+            try:
+                response = requests.get(href, timeout=5, verify=False)
+                response.raise_for_status()
+            except requests.RequestException as e:
+                dispatcher.utter_message(text=f"Failed to fetch the content from {href}")
+                return []
 
+            try:
+                soup = BeautifulSoup(response.text, "html.parser")
+                paragraphs = soup.find_all("p")
+                if not paragraphs:
+                    dispatcher.utter_message(text="Sorry, I couldn't extract any readable content.")
+                    return []
+            except Exception as e:
+                dispatcher.utter_message(text="Error while parsing the content.")
+                return []
 
+            summary = ""
+            for p in paragraphs:
+                summary += p.get_text(strip=False) + "\n\n"
 
-        body = re.sub(r'\([^)]*\)|\{[^}]*\}|\[[^\]]*\]','', results[0]['body'])
-        
-        dispatcher.utter_message(text=f"According to {domain}, {body}")
+            summary = re.sub(r'\([^)]*\)|\{[^}]*\}|\[[^\]]*\]', '', summary)
 
-        return [SlotSet("href", href)]
+            first_dot = summary.find('.')
+            if first_dot == -1:
+                dispatcher.utter_message(text=summary.strip())
+                return [SlotSet("href", href)]
+
+            second_dot = summary.find('.', first_dot + 1)
+            if second_dot == -1:
+                dispatcher.utter_message(text=summary[:first_dot + 1].strip())
+                return [SlotSet("href", href)]
+
+            third_dot = summary.find('.', second_dot + 1)
+            if third_dot == -1:
+                dispatcher.utter_message(text=summary[:second_dot + 1].strip())
+                return [SlotSet("href", href)]
+
+            dispatcher.utter_message(text=summary[:third_dot + 1].strip())
+            return [SlotSet("href", href)]
+
+        except Exception as e:
+            dispatcher.utter_message(text="An unexpected error occurred. Please try again later.")
+            return []
 
 class ActionInternetMoreInfo(Action):
     def name(self) -> Text:

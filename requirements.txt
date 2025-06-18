@@ -1,0 +1,5 @@
+rasa-sdk
+requests
+wikipedia-api
+duckduckgo-search
+beautifulsoup4
