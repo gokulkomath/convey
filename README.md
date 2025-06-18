@@ -65,8 +65,8 @@ I welcome contributions and feedback to help make Convey a more powerful and ver
     ```
 4.  **Run the bot:**
     ```bash
-    # rasa run actions 
-    # rasa shell
+     rasa run actions 
+     rasa shell
     ```
 
 
